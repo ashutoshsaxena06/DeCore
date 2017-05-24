@@ -1,4 +1,6 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -13,7 +15,7 @@ public class NewTest extends DETest {
 
 	@AfterClass
 	public void afterClass() {
-
+		driver.close();
 	}
 
 	@Test(priority=1)
@@ -45,13 +47,14 @@ public class NewTest extends DETest {
 			driver.findElement(By.xpath("//div[6]/div/div/div[3]/button")).click();
 			WaitForPageToLoad(30);
 			Thread.sleep(5000);
+		/*	WebElement ddl_SelectLocation = );
+			Actions act = new Actions(driver);
+			act.moveToElement(ddl_SelectLocation).doubleClick();*/
+			driver.findElement(By.id("dropdownMenu1")).click();
 			driver.findElement(By.id("dropdownMenu1")).click();
 			driver.findElement(By.linkText("Ed1 copy3")).click();
 			System.out.println("All locations checked");
 		} catch (Exception e) {
-			driver.findElement(By.id("dropdownMenu1")).click();
-			driver.findElement(By.linkText("Ed1 copy3")).click();
-			System.out.println("All locations checked");
 			e.printStackTrace();
 		}
 	}
@@ -64,6 +67,13 @@ public class NewTest extends DETest {
 		tesForLinks();
 	}
 	
+	@Test(priority=5)
+	public void LogOut_Function() throws InterruptedException {
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//a/i[@title='Log Out']")).click();
+		System.out.println("LogOut Success");
+
+	}
 	
 	
 }

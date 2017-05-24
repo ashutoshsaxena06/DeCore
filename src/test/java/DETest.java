@@ -16,7 +16,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -29,7 +28,7 @@ public class DETest {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\ashsaxen\\Downloads\\chromedriver_win32\\chromedriver.exe");
+				"C:\\Users\\Edge\\Downloads\\chromedriver_win32\\chromedriver.exe");
 		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		return driver;
@@ -73,7 +72,7 @@ public class DETest {
 			for (int i = 0; i < 3; i++) {
 				String act = getDriver().getTitle();
 				if (act.equals(expectedTitle)) {
-					System.out.println("current page - " + expectedTitle);
+					System.out.println(">> Current page - " + expectedTitle);
 					return true;
 				} else {
 					Thread.sleep(2000);
@@ -89,11 +88,11 @@ public class DETest {
 
 	}
 
-	public List findAllLinks() {
+	public List<WebElement> findAllLinks() {
 		List<WebElement> linksOnPage = getDriver().findElements(By.tagName("a"));
 		linksOnPage.addAll(driver.findElements(By.tagName("img")));
 		System.out.println("Total links and Images on current Page :- " + linksOnPage.size());
-		List finalList = new ArrayList();
+		List<WebElement> finalList = new ArrayList<WebElement>();
 		for (WebElement link : linksOnPage) {
 			if (link.getAttribute("href") != null) {
 				finalList.add(link);
@@ -120,7 +119,7 @@ public class DETest {
 		System.out.println("Total number of elements found " + allImages.size());
 		for (WebElement element : allImages) {
 			try {
-				System.out.println("URL: " + element.getAttribute("href") + " :: returned -> "
+				System.out.println(element.getAttribute("title") + "  - URL: " + element.getAttribute("href") + " :: returned -> "
 						+ isLinkBroken(new URL(element.getAttribute("href"))));
 				// System.out.println("URL: " +
 				// element.getAttribute("outerhtml")+ " returned " +
