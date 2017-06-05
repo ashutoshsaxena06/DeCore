@@ -133,12 +133,16 @@ public class DETest {
 		}
 	}
 	
-	public void SampleOrder(){
+	public void SampleOrder() throws InterruptedException{
 		{
 		    driver.findElement(By.cssSelector("i.graphic-icon-orderedge.graphic-icon")).click();
+		    WaitForPageToLoad(30);
+		    Thread.sleep(5000);
 		    driver.findElement(By.id("searchmix_name_value")).click();
 		    driver.findElement(By.id("searchmix_name_value")).clear();
+		    Thread.sleep(5000);
 		    driver.findElement(By.id("searchmix_name_value")).sendKeys("cheese");
+		    Thread.sleep(5000);
 		    driver.findElement(By.xpath("//div[@id='item-wrapper-2089436']/div[4]/div/div[3]/div/select")).click();
 		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2089436']/div[4]/div/div[3]/div/select"))).selectByVisibleText("1");
 		    driver.findElement(By.cssSelector("option[value=\"1\"]")).click();
@@ -152,8 +156,11 @@ public class DETest {
 		    driver.findElement(By.xpath("(//option[@value='20'])[17]")).click();
 		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2012135']/div[5]/div/div[3]/div/select"))).selectByVisibleText("5");
 		    driver.findElement(By.xpath("(//option[@value='5'])[17]")).click();
+		    Thread.sleep(5000);
+		    WaitForPageToLoad(30);
 		    driver.findElement(By.linkText("Checkout:")).click();
-		    driver.findElement(By.linkText("Checkout")).click();
+		    Thread.sleep(5000);
+		    WaitForPageToLoad(30);
 		    driver.findElement(By.linkText("Submit Order")).click();
 		   // assertEquals(closeAlertAndGetItsText(), "Error: Connection to diningedge.smtp.com:80 Timed Out");
 		  //  driver.findElement(By.cssSelector("i.logo-image")).click();
