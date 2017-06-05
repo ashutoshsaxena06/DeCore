@@ -1,6 +1,4 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -10,7 +8,7 @@ public class NewTest extends DETest {
 	@BeforeClass
 	public void beforeClass() {
 		driver = Preconditions();
-		driver.get("http://user.adv.diningedge.baitek.org/#/access/login");
+		driver.get("https://user.diningedge.com/#/access/login");
 	}
 
 	@AfterClass

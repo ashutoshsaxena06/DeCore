@@ -1,5 +1,7 @@
 
 
+import static org.testng.Assert.assertEquals;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -17,6 +20,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 
 public class DETest {
@@ -28,7 +32,7 @@ public class DETest {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\Edge\\Downloads\\chromedriver_win32\\chromedriver.exe");
+				"C:\\Users\\ashsaxen\\Downloads\\chromedriver_win32\\chromedriver.exe");
 		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		return driver;
@@ -130,5 +134,34 @@ public class DETest {
 			}
 		}
 	}
+	
+	public void SampleOrder(){
+		{
+		    driver.findElement(By.cssSelector("i.graphic-icon-orderedge.graphic-icon")).click();
+		    driver.findElement(By.id("searchmix_name_value")).click();
+		    driver.findElement(By.id("searchmix_name_value")).clear();
+		    driver.findElement(By.id("searchmix_name_value")).sendKeys("cheese");
+		    driver.findElement(By.xpath("//div[@id='item-wrapper-2089436']/div[4]/div/div[3]/div/select")).click();
+		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2089436']/div[4]/div/div[3]/div/select"))).selectByVisibleText("1");
+		    driver.findElement(By.cssSelector("option[value=\"1\"]")).click();
+		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2015133']/div[4]/div/div[3]/div/select"))).selectByVisibleText("1");
+		    driver.findElement(By.xpath("(//option[@value='1'])[2]")).click();
+		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2015139']/div[4]/div/div[3]/div/select"))).selectByVisibleText("10");
+		    driver.findElement(By.xpath("(//option[@value='10'])[6]")).click();
+		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2015792']/div[4]/div/div[3]/div/select"))).selectByVisibleText("5");
+		    driver.findElement(By.xpath("(//option[@value='5'])[11]")).click();
+		    driver.findElement(By.xpath("//div[6]/div/div/div/div/button")).click();
+		    driver.findElement(By.xpath("(//option[@value='20'])[17]")).click();
+		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2012135']/div[5]/div/div[3]/div/select"))).selectByVisibleText("5");
+		    driver.findElement(By.xpath("(//option[@value='5'])[17]")).click();
+		    driver.findElement(By.linkText("Checkout:")).click();
+		    driver.findElement(By.linkText("Checkout")).click();
+		    driver.findElement(By.linkText("Submit Order")).click();
+		   // assertEquals(closeAlertAndGetItsText(), "Error: Connection to diningedge.smtp.com:80 Timed Out");
+		  //  driver.findElement(By.cssSelector("i.logo-image")).click();
+		  //  driver.findElement(By.xpath("//div[3]/button")).click();
+		  }
+	}
+	
 
 }
