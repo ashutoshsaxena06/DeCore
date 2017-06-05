@@ -1,15 +1,11 @@
 
 
-import static org.testng.Assert.assertEquals;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -22,10 +18,12 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
+import org.apache.log4j.Logger;
 
 public class DETest {
 
 	public WebDriver driver;
+	private static final Logger logger = Logger.getLogger(DETest.class);
 
 	public WebDriver Preconditions() {
 
@@ -76,14 +74,14 @@ public class DETest {
 			for (int i = 0; i < 3; i++) {
 				String act = getDriver().getTitle();
 				if (act.equals(expectedTitle)) {
-					System.out.println(">> Current page - " + expectedTitle);
+					logger.info(">> Current page - " + expectedTitle);
 					return true;
 				} else {
 					Thread.sleep(2000);
-					System.out.println("waiting for page.. ");
+					logger.info("waiting for page.. ");
 				}
 			}
-			System.out.println("Not reached page - " + expectedTitle);
+			logger.info("Not reached page - " + expectedTitle);
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +93,7 @@ public class DETest {
 	public List<WebElement> findAllLinks() {
 		List<WebElement> linksOnPage = getDriver().findElements(By.tagName("a"));
 		linksOnPage.addAll(driver.findElements(By.tagName("img")));
-		System.out.println("Total links and Images on current Page :- " + linksOnPage.size());
+		logger.info("Total links and Images on current Page :- " + linksOnPage.size());
 		List<WebElement> finalList = new ArrayList<WebElement>();
 		for (WebElement link : linksOnPage) {
 			if (link.getAttribute("href") != null) {
@@ -120,16 +118,16 @@ public class DETest {
 
 	public void tesForLinks() {
 		List<WebElement> allImages = findAllLinks();
-		System.out.println("Total number of elements found " + allImages.size());
+		logger.info("Total number of elements found " + allImages.size());
 		for (WebElement element : allImages) {
 			try {
-				System.out.println(element.getAttribute("title") + "  - URL: " + element.getAttribute("href") + " :: returned -> "
+				logger.info(element.getAttribute("title") + "  - URL: " + element.getAttribute("href") + " :: returned -> "
 						+ isLinkBroken(new URL(element.getAttribute("href"))));
-				// System.out.println("URL: " +
+				// logger.info("URL: " +
 				// element.getAttribute("outerhtml")+ " returned " +
 				// isLinkBroken(new URL(element.getAttribute("href"))));
 			} catch (Exception exp) {
-				System.out.println(
+				logger.info(
 						"At " + element.getAttribute("innerHTML") + " Exception occured -&gt; " + exp.getMessage());
 			}
 		}

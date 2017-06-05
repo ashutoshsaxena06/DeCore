@@ -1,10 +1,13 @@
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class NewTest extends DETest {
+public class Sanity_test extends DETest {
+	private static final Logger logger = Logger.getLogger(Sanity_test.class);
+
 	@BeforeClass
 	public void beforeClass() {
 		driver = Preconditions();
@@ -36,8 +39,8 @@ public class NewTest extends DETest {
 		
 		Thread.sleep(5000);
 		//validate
-		Assert.assertEquals(driver.getCurrentUrl(), "http://user.adv.diningedge.baitek.org/#/app/home");
-		System.out.println("login functionality working");
+		Assert.assertEquals(driver.getCurrentUrl(), "https://user.diningedge.com/#/app/home");
+		logger.info("login functionality working");
 	}
 	@Test(priority=3)
 	public void SetLocation_Test() throws InterruptedException {
@@ -50,8 +53,8 @@ public class NewTest extends DETest {
 			act.moveToElement(ddl_SelectLocation).doubleClick();*/
 			driver.findElement(By.id("dropdownMenu1")).click();
 			driver.findElement(By.id("dropdownMenu1")).click();
-			driver.findElement(By.linkText("Ed1 copy3")).click();
-			System.out.println("All locations checked");
+			driver.findElement(By.xpath("//button[@id='dropdownMenu1']/following-sibling::*/li[1]/a")).click();
+			logger.info("Location selected");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,14 +65,24 @@ public class NewTest extends DETest {
 		//Home
 		WaitForPageToLoad(30);
 		PageExist("DiningEdge");
-		tesForLinks();
+		//tesForLinks();
 	}
 	
 	@Test(priority=5)
+	public void SampleOrder_Test() throws InterruptedException {
+		//Home
+		WaitForPageToLoad(30);
+		PageExist("DiningEdge");
+		//stesForLinks();
+		SampleOrder();
+		
+	}
+	
+	@Test(priority=6)
 	public void LogOut_Function() throws InterruptedException {
 		Thread.sleep(3000);
 		driver.findElement(By.xpath("//a/i[@title='Log Out']")).click();
-		System.out.println("LogOut Success");
+		logger.info("LogOut Success");
 
 	}
 	
