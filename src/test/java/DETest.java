@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -13,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
@@ -29,7 +31,7 @@ public class DETest {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\ashsaxen\\Downloads\\chromedriver_win32\\chromedriver.exe");
+				"C:\\Users\\Edge\\Downloads\\chromedriver_win32\\chromedriver.exe");
 		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		return driver;
@@ -154,10 +156,12 @@ public class DETest {
 
 			// Search for Item - Cheese
 			// 100164006
-			driver.findElement(By.id("searchmix_name_value")).click();
-			driver.findElement(By.id("searchmix_name_value")).clear();
+			WebElement searchBar = driver.findElement(By.id("searchmix_name_value"));
+			searchBar.click();
+			searchBar.clear();
 			Thread.sleep(5000);
-			driver.findElement(By.id("searchmix_name_value")).sendKeys("100164006");
+			searchBar.sendKeys("100164006");
+			driver.findElement(By.id("searchmix_name_value")).sendKeys(Keys.RETURN);
 			logger.info("Searching for item in Grid ....");
 			Thread.sleep(5000);
 
@@ -168,21 +172,27 @@ public class DETest {
 				Select se = new Select(driver.findElement(By.xpath("//tr/td[" + n
 						+ "]/*/*/*/div[@class='qty-info']/*/*[@class='quantity-box bordered-box helper-qty']")));
 				se.selectByVisibleText(Integer.toString(n));
+				logger.info("Item selected from Grid with quantity -" + n);
 				n--;
 			}
 			Thread.sleep(5000);
 			WaitForPageToLoad(30);
 			driver.findElement(By.linkText("Checkout:")).click();
 			logger.info("Items Selected from grid. Proceed to checkout");
-			
+
 			Thread.sleep(5000);
 			WaitForPageToLoad(30);
 			driver.findElement(By.linkText("Checkout")).click();
 			logger.info("Checkout complete. Proceed to submit order");
-			
+
 			Thread.sleep(5000);
 			WaitForPageToLoad(30);
-			driver.findElement(By.xpath("//div[@class='cart-actions']/a[3]")).click();
+			try {
+				Wait(40).until(ExpectedConditions
+						.elementToBeClickable(driver.findElement(By.xpath("//div[@class='cart-actions']/a[3]"))));
+			} catch (Exception e) {
+				logger.info(e.getMessage());
+			}
 			logger.info("Order Submitted !!!");
 		}
 	}
@@ -190,7 +200,9 @@ public class DETest {
 	public void handleModal_Continue() {
 		try {
 			driver.switchTo().frame("modal-dialog");
-			driver.findElement(By.xpath("//*[@class='modal-dialog']/*/div[@class='modal-footer ng-scope']/button[contains(.,'Create New Order')]")).click();
+			driver.findElement(By
+					.xpath("//*[@class='modal-dialog']/*/div[@class='modal-footer ng-scope']/button[contains(.,'Create New Order')]"))
+					.click();
 			driver.switchTo().activeElement();
 			logger.info("Pop-up Handled !");
 		} catch (Exception e) {

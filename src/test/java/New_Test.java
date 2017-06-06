@@ -5,8 +5,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class Sanity_test extends DETest {
-	private static final Logger logger = Logger.getLogger(Sanity_test.class);
+public class New_Test extends DETest {
+	private static final Logger logger = Logger.getLogger(New_Test.class);
 
 	@BeforeClass
 	public void beforeClass() {
