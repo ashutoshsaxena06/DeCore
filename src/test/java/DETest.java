@@ -188,8 +188,10 @@ public class DETest {
 			Thread.sleep(5000);
 			WaitForPageToLoad(30);
 			try {
-				Wait(40).until(ExpectedConditions
+			WebElement submitBtn = Wait(40).until(ExpectedConditions
 						.elementToBeClickable(driver.findElement(By.xpath("//div[@class='cart-actions']/a[3]"))));
+				submitBtn.click();
+				
 			} catch (Exception e) {
 				logger.info(e.getMessage());
 			}
