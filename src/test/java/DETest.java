@@ -1,5 +1,3 @@
-
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,6 +17,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.apache.log4j.Logger;
+import org.apache.xpath.operations.Or;
 
 public class DETest {
 
@@ -37,7 +36,7 @@ public class DETest {
 	}
 
 	public WebDriver getDriver() {
-	//	driver = Preconditions();
+		// driver = Preconditions();
 		return this.driver;
 	}
 
@@ -121,52 +120,82 @@ public class DETest {
 		logger.info("Total number of elements found " + allImages.size());
 		for (WebElement element : allImages) {
 			try {
-				logger.info(element.getAttribute("title") + "  - URL: " + element.getAttribute("href") + " :: returned -> "
-						+ isLinkBroken(new URL(element.getAttribute("href"))));
+				logger.info(element.getAttribute("title") + "  - URL: " + element.getAttribute("href")
+						+ " :: returned -> " + isLinkBroken(new URL(element.getAttribute("href"))));
 				// logger.info("URL: " +
 				// element.getAttribute("outerhtml")+ " returned " +
 				// isLinkBroken(new URL(element.getAttribute("href"))));
 			} catch (Exception exp) {
-				logger.info(
-						"At " + element.getAttribute("innerHTML") + " Exception occured -&gt; " + exp.getMessage());
+				logger.info("At " + element.getAttribute("innerHTML") + " Exception occured -&gt; " + exp.getMessage());
 			}
 		}
 	}
-	
-	public void SampleOrder() throws InterruptedException{
+
+	public void SampleOrder() throws InterruptedException {
 		{
-		    driver.findElement(By.cssSelector("i.graphic-icon-orderedge.graphic-icon")).click();
-		    WaitForPageToLoad(30);
-		    Thread.sleep(5000);
-		    driver.findElement(By.id("searchmix_name_value")).click();
-		    driver.findElement(By.id("searchmix_name_value")).clear();
-		    Thread.sleep(5000);
-		    driver.findElement(By.id("searchmix_name_value")).sendKeys("cheese");
-		    Thread.sleep(5000);
-		    driver.findElement(By.xpath("//div[@id='item-wrapper-2089436']/div[4]/div/div[3]/div/select")).click();
-		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2089436']/div[4]/div/div[3]/div/select"))).selectByVisibleText("1");
-		    driver.findElement(By.cssSelector("option[value=\"1\"]")).click();
-		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2015133']/div[4]/div/div[3]/div/select"))).selectByVisibleText("1");
-		    driver.findElement(By.xpath("(//option[@value='1'])[2]")).click();
-		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2015139']/div[4]/div/div[3]/div/select"))).selectByVisibleText("10");
-		    driver.findElement(By.xpath("(//option[@value='10'])[6]")).click();
-		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2015792']/div[4]/div/div[3]/div/select"))).selectByVisibleText("5");
-		    driver.findElement(By.xpath("(//option[@value='5'])[11]")).click();
-		    driver.findElement(By.xpath("//div[6]/div/div/div/div/button")).click();
-		    driver.findElement(By.xpath("(//option[@value='20'])[17]")).click();
-		    new Select(driver.findElement(By.xpath("//div[@id='item-wrapper-2012135']/div[5]/div/div[3]/div/select"))).selectByVisibleText("5");
-		    driver.findElement(By.xpath("(//option[@value='5'])[17]")).click();
-		    Thread.sleep(5000);
-		    WaitForPageToLoad(30);
-		    driver.findElement(By.linkText("Checkout:")).click();
-		    Thread.sleep(5000);
-		    WaitForPageToLoad(30);
-		    driver.findElement(By.linkText("Submit Order")).click();
-		   // assertEquals(closeAlertAndGetItsText(), "Error: Connection to diningedge.smtp.com:80 Timed Out");
-		  //  driver.findElement(By.cssSelector("i.logo-image")).click();
-		  //  driver.findElement(By.xpath("//div[3]/button")).click();
-		  }
+			driver.findElement(By.cssSelector("i.graphic-icon-orderedge.graphic-icon")).click();
+			logger.info("Order Grid page");
+			WaitForPageToLoad(30);
+			Thread.sleep(5000);
+
+			// Pop up
+			handleModal_Continue();
+
+			WaitForPageToLoad(30);
+			Thread.sleep(5000);
+			// List of purveyors
+			List<WebElement> OrderGrid_Purveyors = driver.findElements(By.xpath("//table/*/tr[1]/th"));
+			logger.info("Number of purveyors on OrderGrid - " + (OrderGrid_Purveyors.size() - 1));
+			int i = 0;
+			for (WebElement webElement : OrderGrid_Purveyors) {
+				logger.info(i + " " + webElement.getText());
+				i++;
+			}
+
+			// Search for Item - Cheese
+			// 100164006
+			driver.findElement(By.id("searchmix_name_value")).click();
+			driver.findElement(By.id("searchmix_name_value")).clear();
+			Thread.sleep(5000);
+			driver.findElement(By.id("searchmix_name_value")).sendKeys("100164006");
+			logger.info("Searching for item in Grid ....");
+			Thread.sleep(5000);
+
+			//
+			List<WebElement> Ordergrid_Items = driver.findElements(By.xpath("//tr/td[1]/following-sibling::*/*"));
+			int n = Ordergrid_Items.size() + 1;
+			for (WebElement element : Ordergrid_Items) {
+				Select se = new Select(driver.findElement(By.xpath("//tr/td[" + n
+						+ "]/*/*/*/div[@class='qty-info']/*/*[@class='quantity-box bordered-box helper-qty']")));
+				se.selectByVisibleText(Integer.toString(n));
+				n--;
+			}
+			Thread.sleep(5000);
+			WaitForPageToLoad(30);
+			driver.findElement(By.linkText("Checkout:")).click();
+			logger.info("Items Selected from grid. Proceed to checkout");
+			
+			Thread.sleep(5000);
+			WaitForPageToLoad(30);
+			driver.findElement(By.linkText("Checkout")).click();
+			logger.info("Checkout complete. Proceed to submit order");
+			
+			Thread.sleep(5000);
+			WaitForPageToLoad(30);
+			driver.findElement(By.xpath("//div[@class='cart-actions']/a[3]")).click();
+			logger.info("Order Submitted !!!");
+		}
 	}
-	
+
+	public void handleModal_Continue() {
+		try {
+			driver.switchTo().frame("modal-dialog");
+			driver.findElement(By.xpath("//*[@class='modal-dialog']/*/div[@class='modal-footer ng-scope']/button[contains(.,'Create New Order')]")).click();
+			driver.switchTo().activeElement();
+			logger.info("Pop-up Handled !");
+		} catch (Exception e) {
+			logger.info("No Pop-Up !");
+		}
+	}
 
 }

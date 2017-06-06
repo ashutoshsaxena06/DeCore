@@ -16,7 +16,7 @@ public class Sanity_test extends DETest {
 
 	@AfterClass
 	public void afterClass() {
-		driver.close();
+	//	driver.close();
 	}
 
 	@Test(priority=1)
@@ -81,7 +81,7 @@ public class Sanity_test extends DETest {
 	@Test(priority=6)
 	public void LogOut_Function() throws InterruptedException {
 		Thread.sleep(3000);
-		driver.findElement(By.xpath("//a/i[@title='Log Out']")).click();
+	//	driver.findElement(By.xpath("//a/i[@title='Log Out']")).click();
 		logger.info("LogOut Success");
 
 	}
