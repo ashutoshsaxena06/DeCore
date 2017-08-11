@@ -27,6 +27,7 @@ public class New_Test extends DETest {
 	}
 
 	@Test(priority=2)
+	 
 	public void LoginFunctionality() throws InterruptedException {
 		WaitForPageToLoad(30);
 		PageExist("DiningEdge");
@@ -73,7 +74,7 @@ public class New_Test extends DETest {
 		//Home
 		WaitForPageToLoad(30);
 		PageExist("DiningEdge");
-		tesForLinks();
+		//tesForLinks();
 		SampleOrder();
 		
 	}
